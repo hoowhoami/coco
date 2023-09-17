@@ -32,8 +32,10 @@ func setupGinEngine() *gin.Engine {
 
 // 定义路由和中间件
 func setupRoutes(engine *gin.Engine) {
-	domainDefault := engine.Group("/", domainMiddleware(config.Server.Domain))
-	domainDefault.GET("/copilot_internal/v2/token", getGithubCopilotToken())
+	routerGroup := engine.Group("/", domainMiddleware(config.Server.Domain))
+	routerGroup.GET("/copilot_internal/v2/token", getGithubCopilotToken())
+	routerGroup.GET("/state", getState())
+
 }
 
 // 域名中间件

@@ -15,10 +15,10 @@ func console() {
 	fmt.Println(color.WhiteString("-----------------------------------------------------------------------"))
 	var url = "http://127.0.0.1:" + strconv.Itoa(config.Server.Port)
 	var jetStr = color.WhiteString("[Endpoint Jetbrains]")
-	var vsStr = color.WhiteString("[Endpoint Vscode]")
-	var valid = color.WhiteString("[Valid tokens]")
+	var vscStr = color.WhiteString("[Endpoint    Vscode]")
+	var valid = color.WhiteString("[Valid       Tokens]")
 	fmt.Println(jetStr + ": " + color.HiBlueString(url+"/copilot_internal/v2/token"))
-	fmt.Println(vsStr + ": " + color.HiBlueString(url))
+	fmt.Println(vscStr + ": " + color.HiBlueString(url))
 	fmt.Println(valid + ": " + color.HiBlueString(strconv.Itoa(len(validGithubTokens))))
 	fmt.Println(color.WhiteString("-----------------------------------------------------------------------"))
 	for {

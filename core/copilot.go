@@ -93,6 +93,17 @@ func getGithubCopilotToken() gin.HandlerFunc {
 	}
 }
 
+func getState() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"valid_tokens": len(validGithubTokens),
+			"succeed":      successCount,
+			"failed":       requestCount - successCount,
+			"github_api":   githubApiCount,
+		})
+	}
+}
+
 // 验证请求代理请求token
 func authentication(c *gin.Context) error {
 	if config.Secret != "" {
