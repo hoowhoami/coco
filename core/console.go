@@ -13,20 +13,13 @@ func console() {
 	fmt.Println(color.HiBlueString(banner))
 	fmt.Println(color.WhiteString("[Version]") + " " + version)
 	fmt.Println(color.WhiteString("-----------------------------------------------------------------------"))
-	var url = ""
-	if config.Server.Port == 80 {
-		url = "http://" + config.Server.Domain
-	} else if config.Server.Port == 443 {
-		url = "https://" + config.Server.Domain
-	} else {
-		url = "http://" + config.Server.Domain + ":" + strconv.Itoa(config.Server.Port)
-	}
+	var url = "http://127.0.0.1:" + strconv.Itoa(config.Server.Port)
 	var jetStr = color.WhiteString("[Endpoint Jetbrains]")
 	var vsStr = color.WhiteString("[Endpoint Vscode]")
 	var valid = color.WhiteString("[Valid tokens]")
 	fmt.Println(jetStr + ": " + color.HiBlueString(url+"/copilot_internal/v2/token"))
 	fmt.Println(vsStr + ": " + color.HiBlueString(url))
-	fmt.Println(valid + ": " + color.HiBlueString(strconv.Itoa(len(validGithubTokenPool))))
+	fmt.Println(valid + ": " + color.HiBlueString(strconv.Itoa(len(validGithubTokens))))
 	fmt.Println(color.WhiteString("-----------------------------------------------------------------------"))
 	for {
 		requestCountMutex.Lock()

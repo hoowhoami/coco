@@ -25,7 +25,7 @@ func initValidTokenList() {
 		go func(token string) {
 			defer wg.Done()
 			if getGithubApi(token) {
-				validGithubTokenPool[token] = true
+				validGithubTokens[token] = true
 			}
 		}(token)
 	}
@@ -59,12 +59,12 @@ func getGithubApi(token string) bool {
 			// 处理JSON解析错误
 			return false
 		}
-		// token map
-		copilotTokenCache[token] = copilotTokenData
+		// cache token
+		copilotTokens[token] = copilotTokenData
 		return true
 	} else {
 		// 处理其他状态码
-		delete(validGithubTokenPool, token)
+		delete(validGithubTokens, token)
 		return false
 	}
 }
@@ -77,15 +77,16 @@ func getGithubCopilotToken() gin.HandlerFunc {
 			badRequest(c)
 			return
 		}
-		token := getRandomGithubToken(validGithubTokenPool)
-		if respDataMap, exists := getCopilotTokenData(token); exists {
-			if !isTokenExpired(respDataMap) {
-				proxyResponse(c, respDataMap)
+		token := getRandomGithubToken(validGithubTokens)
+		// 从map中获取github token对应的copilot token
+		if copilotToken, exists := copilotTokens[token]; exists {
+			if !isTokenExpired(copilotToken) {
+				proxyResponse(c, copilotToken)
 				return
 			}
 		}
 		if getGithubApi(token) {
-			proxyResponse(c, copilotTokenCache[token])
+			proxyResponse(c, copilotTokens[token])
 		} else {
 			badRequest(c)
 		}
@@ -97,18 +98,12 @@ func authentication(c *gin.Context) error {
 	if config.Secret != "" {
 		token := c.GetHeader("Authorization")
 		tokenStr := strings.ReplaceAll(token, " ", "")
-		configCert := strings.ReplaceAll(config.Secret, " ", "")
-		if tokenStr != "token"+configCert {
+		configSecret := strings.ReplaceAll(config.Secret, " ", "")
+		if tokenStr != "token"+configSecret {
 			return errors.New("unauthorized")
 		}
 	}
 	return nil
-}
-
-// 从map中获取github token对应的copilot token
-func getCopilotTokenData(token string) (map[string]interface{}, bool) {
-	copilotToken, exists := copilotTokenCache[token]
-	return copilotToken, exists
 }
 
 // 检测copilot token是否过期

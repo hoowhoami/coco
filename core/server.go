@@ -39,13 +39,17 @@ func setupRoutes(engine *gin.Engine) {
 // 域名中间件
 func domainMiddleware(domain string) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		// 检查域名是否匹配
-		requestDomain := strings.Split(c.Request.Host, ":")[0]
-		if requestDomain == domain || requestDomain == "127.0.0.1" {
-			c.Next()
+		if domain != "" {
+			// 检查域名是否匹配
+			requestDomain := strings.Split(c.Request.Host, ":")[0]
+			if requestDomain == domain || requestDomain == "127.0.0.1" {
+				c.Next()
+			} else {
+				c.String(403, "Forbidden")
+				c.Abort()
+			}
 		} else {
-			c.String(403, "Forbidden")
-			c.Abort()
+			c.Next()
 		}
 	}
 }
