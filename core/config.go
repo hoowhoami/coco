@@ -27,14 +27,14 @@ type CopilotConfig struct {
 // 初始化配置文件
 func initConfig() Config {
 	// 读取配置文件
-	configFile, err := os.Open("./config.yaml")
+	configFile, err := os.Open("./config/config.yaml")
 	if err != nil {
-		panic("file \"./config.yaml\" not found")
+		panic("file \"./config/config.yaml\" not found")
 	}
 	defer func(configFile *os.File) {
 		err := configFile.Close()
 		if err != nil {
-			panic("failed to close file \"./config.yaml\"")
+			panic("failed to close file \"./config/config.yaml\"")
 		}
 	}(configFile)
 	decoder := yaml.NewDecoder(configFile)
