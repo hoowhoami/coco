@@ -27,8 +27,10 @@ func console() {
 		tCount := requestCount
 		gCount := githubApiCount
 		requestCountMutex.Unlock()
-		currentTime := time.Now().Format("2006-01-02 15:04:05")
+		currentDateTime := time.Now().Format("2006-01-02 15:04:05")
+		currentTime := time.Now().Format("15:04:05")
 		if "00:00:00" == currentTime {
+			// 每天凌晨重置
 			resetRequestCount()
 		}
 		var s2 = color.WhiteString("[Succeed]")
@@ -36,7 +38,7 @@ func console() {
 		var s4 = color.WhiteString("[GithubApi]")
 		// 打印文本
 		fmt.Printf("\033[G%s  -  %s: %s    %s: %s    %s: %s  ",
-			color.HiYellowString(currentTime),
+			color.HiYellowString(currentDateTime),
 			s2, color.GreenString(strconv.Itoa(sCount)),
 			s3, color.RedString(strconv.Itoa(tCount-sCount)),
 			s4, color.CyanString(strconv.Itoa(gCount)))
