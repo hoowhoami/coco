@@ -21,6 +21,7 @@ WORKDIR /dist
 
 # 将二进制文件从 /build 目录复制到这里
 RUN cp /build/app .
+RUN cp /build/config .
 
 # 声明服务端口
 EXPOSE 8888
