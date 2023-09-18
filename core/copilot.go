@@ -96,6 +96,7 @@ func getGithubCopilotToken() gin.HandlerFunc {
 func getState() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
+			"version":      version,
 			"valid_tokens": len(validGithubTokens),
 			"succeed":      successCount,
 			"failed":       requestCount - successCount,
