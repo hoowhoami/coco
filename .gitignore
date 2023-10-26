@@ -1,1 +1,21 @@
 .idea
+
+# product
+__pycache__
+
+# enviroment
+.venv
+.vscode
+
+# log
+app.log
+nohup.out
+server_access.log
+server_error.log
+
+# config
+config.py
+gunicorn_config.py
+
+# uWSGI
+uwsgi
